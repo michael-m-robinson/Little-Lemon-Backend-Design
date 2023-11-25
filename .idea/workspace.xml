@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="52f66a67-080f-488a-8e2e-d32b469760be" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/restaurant/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/littlelemon/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/littlelemon/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/littlelemon/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/littlelemon/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/restaurant/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/restaurant/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/restaurant/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/restaurant/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +92,7 @@
       <option name="presentableId" value="Default" />
       <updated>1700783138946</updated>
       <workItem from="1700783140584" duration="4505000" />
-      <workItem from="1700834747229" duration="6899000" />
+      <workItem from="1700834747229" duration="9777000" />
     </task>
     <servers />
   </component>
