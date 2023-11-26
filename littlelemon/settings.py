@@ -78,7 +78,6 @@ WSGI_APPLICATION = 'littlelemon.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-#Settings.py
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -136,7 +135,15 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DJOSER = {
-    "USER_ID_FIELD": "username"
+    "LOGIN_FIELD": "username",
+    "USER_ID_FIELD": "username",
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "SERIALIZERS": {
+        'user_create': 'restaurant.serializers.UserCreateSerializer',
+        'user_delete': 'djoser.serializers.UserDeleteSerializer',
+        'user': 'restaurant.serializers.UserCreateSerializer',
+    }
+
 }
 
 REST_FRAMEWORK = {
@@ -145,3 +152,5 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+AUTH_USER_MODEL = 'restaurant.UserAccount'

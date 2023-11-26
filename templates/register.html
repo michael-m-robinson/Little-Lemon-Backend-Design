@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section>
+    <article>
+    <h1>Register for an account</h1>
+        <div class="row">
+            <div class="column">
+                {% csrf_token %}
+                <form id="registration_form" method="POST">
+                    <!-- {% csrf_token %} -->
+                    <p>
+                        <label for="username">Username:</label>
+                        <input id="username" type="text" placeholder="Pick a username" maxlength="200" required>
+                    <p id="username_message" style="color:red"></p>
+                    <p>
+                        <label for="first_name">First name:</label>
+                        <input id="first_name" type="text" placeholder="First name..." maxlength="200" required>
+                        <p id="first_name_message" style="color:red"></p>
+                    <p>
+                        <label for="last_name">Last name:</label>
+                        <input id="last_name" type="text" placeholder="Last name..." maxlength="200" required>
+                        <p id="last_name_message" style="color:red"></p>
+                    <p>
+                        <label for="email">email:</label>
+                        <input id="email" type="email" placeholder="email..." maxlength="200" required>
+                        <p id="email_message" style="color:red"></p>
+                    <p>
+                        <label for="password">Password:</label>
+                        <input id="password" type="password" placeholder="password..." maxlength="200" required>
+                        <p id="password_message" style="color:red"></p>
+                    <p>
+                        <label for="re-password">Confirm Password:</label>
+                        <input id="re-password" type="password" placeholder="confirm password..." maxlength="200" required>
+                    </p>
+                    <button type="button" id="button">Submit</button>
+                </form>
+            </div>
+        </div>
+    </article>
+</section>
+<script>
+const date = new Date();
+const csrf_token = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+document.getElementById('button').addEventListener('click', () => {
+    validateAndSendForm();
+});
+
+  const validateAndSendForm = () => {
+
+      const registrationForm = document.getElementById('registration_form');
+      const formElements = registrationForm.querySelectorAll('input');
+      
+      formElements.forEach((element) =>{
+          if(!element.checkValidity()) {
+              element.reportValidity();
+              return false;
+          }
+      });
+      
+      const form_data = {
+          username: document.getElementById('username'),
+          first_name: document.getElementById('first_name'),
+          last_name: document.getElementById('last_name'),
+          email: document.getElementById(('email')),
+          password: document.getElementById('password'),
+          re_password: document.getElementById('re_password'),
+      }
+      
+      console.log(JSON.stringify(formdata));
+      fetch('/auth/users/', {
+        method: 'post',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'X-CSRFToken': csrf_token },
+        body: JSON.stringify(formdata),
+      })
+        .then((r) => r.text())
+        .then((data) => {
+          console.log(data);
+        });
+  };
+</script>
+{% endblock %}
