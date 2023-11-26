@@ -41,7 +41,6 @@
     </article>
 </section>
 <script>
-const date = new Date();
 const csrf_token = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
 document.getElementById('button').addEventListener('click', () => {
@@ -57,7 +56,6 @@ document.getElementById('button').addEventListener('click', () => {
 });
 
 const registerUser = async (userData) => {
-  const hiddenAttr = document.createAttribute('hidden');
   try {
     const response = await fetch('/auth/users/', {
       method: 'POST',
