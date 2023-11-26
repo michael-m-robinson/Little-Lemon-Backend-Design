@@ -122,7 +122,7 @@ const registerUser = async (userData) => {
         otherMessage.removeAttribute('hidden');
       } else {
         otherMessage.innerHTML = '';
-        otherMessage.removeAttribute('hidden');
+        otherMessage.setAttribute('hidden', '');
       }
       
       if (errorData.re_password && errorData.re_password.length > 0) {
@@ -130,7 +130,7 @@ const registerUser = async (userData) => {
         otherMessage.removeAttribute('hidden');
       } else {
         otherMessage.innerHTML = '';
-        otherMessage.removeAttribute('hidden');
+        otherMessage.setAttribute('hidden', '');
       }
     } else {
       const responseData = await response.json();
