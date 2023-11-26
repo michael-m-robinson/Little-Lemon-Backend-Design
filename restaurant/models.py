@@ -7,38 +7,30 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 # Create your models here.
 
 class UserAccountManager(BaseUserManager):
-    def create_user(self, username, email, first_name, last_name, date_joined, password=None,
-                    password_confirmation=None):
+    def create_user(self, username, email, first_name, last_name, password=None):
         if not username:
             raise ValueError('Please provide a username.')
-        if password != password_confirmation:
-            raise ValueError('Passwords do not match.')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, username=username, first_name=first_name, last_name=last_name,
-                          date_joined=date_joined)
+        user = self.model(username=username, email=email, first_name=first_name, last_name=last_name)
         user.set_password(password)
         user.save()
 
         return user
 
-    def create_superuser(self, username, email, first_name, last_name, date_joined, password=None,
-                         password_confirmation=None, **extra_fields):
+    def create_superuser(self, username, email, first_name, last_name, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
         if not username:
             raise ValueError('Please provide a username.')
-        if password != password_confirmation:
-            raise ValueError('Passwords do not match.')
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must be a staff member.')
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, username=username, first_name=first_name, last_name=last_name,
-                          date_joined=date_joined, **extra_fields)
+        user = self.model(email=email, username=username, first_name=first_name, last_name=last_name, **extra_fields)
         user.set_password(password)
         user.save()
 
