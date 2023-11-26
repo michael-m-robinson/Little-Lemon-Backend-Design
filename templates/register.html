@@ -13,28 +13,27 @@
                     <p>
                         <label for="username">Username:</label>
                         <input id="username" type="text" placeholder="Pick a username" maxlength="200" required>
-                    <p id="username_message" style="color:red; font-size: 15px;"></p>
+                    <p id="username_message" style="color:red; margin-top: -20px; font-size: 15px;" hidden></p>
                     <p>
                         <label for="first_name">First name:</label>
                         <input id="first_name" type="text" placeholder="First name..." maxlength="200" required>
-                        <p id="first_name_message" style="color:red; font-size: 15px;"></p>
+                        <p id="first_name_message" style="color:red; margin-top: -20px; font-size: 15px;" hidden></p>
                     <p>
                         <label for="last_name">Last name:</label>
                         <input id="last_name" type="text" placeholder="Last name..." maxlength="200" required>
-                        <p id="last_name_message" style="color:red; font-size: 15px;"></p>
+                        <p id="last_name_message" style="color:red; margin-top: -20px; font-size: 15px;" hidden></p>
                     <p>
                         <label for="email">email:</label>
                         <input id="email" type="email" placeholder="email..." maxlength="200" required>
-                        <p id="email_message" style="color:red; font-size: 15px;"></p>
+                        <p id="email_message" style="color:red; margin-top: -20px; font-size: 15px;" hidden></p>
                     <p>
                         <label for="password">Password:</label>
                         <input id="password" type="password" placeholder="password..." maxlength="200" required>
-                        <p id="password_message" style="color:red; font-size: 15px;"></p>
+                        <p id="password_message" style="color:red; margin-top: -20px; font-size: 15px;" hidden></p>
                     <p>
                         <label for="re_password">Confirm Password:</label>
                         <input id="re_password" type="password" placeholder="confirm password..." maxlength="200" required>
-                        <p id="other_message" style="color:red; font-size: 15px;"></p>
-                    </p>
+                        <p id="other_message" style="color:red; margin-top: -20px; font-size: 15px;" hidden></p>
                     <button type="button" id="button">Submit</button>
                 </form>
             </div>
@@ -46,43 +45,27 @@ const date = new Date();
 const csrf_token = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
 document.getElementById('button').addEventListener('click', () => {
-          const form_data = {
-          username: document.getElementById('username').value,
-          first_name: document.getElementById('first_name').value,
-          last_name: document.getElementById('last_name').value,
-          email: document.getElementById(('email')).value,
-          password: document.getElementById('password').value,
-          re_password: document.getElementById('re_password').value,
-      }
-    registerUser(form_data);
+  const form_data = {
+    username: document.getElementById('username').value,
+    first_name: document.getElementById('first_name').value,
+    last_name: document.getElementById('last_name').value,
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value,
+    re_password: document.getElementById('re_password').value,
+  };
+  registerUser(form_data);
 });
 
-  const validateAndSendForm = (form_data) => {
-      const registrationForm = document.getElementById('registration_form');
-      const formElements = registrationForm.querySelectorAll('input');
-      
-      formElements.forEach((element) =>{
-          if(!element.checkValidity()) {
-              element.reportValidity();
-              return false;
-          }
-      });
-      
-      fetch('/auth/users/', {
-        method: 'post',
-        headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'X-CSRFToken': csrf_token },
-        body: JSON.stringify(form_data),
-      })
-        .then((r) => r.text())
-        .then((data) => {
-        });
-  };
-
-  const registerUser = async (userData) => {
+const registerUser = async (userData) => {
+  const hiddenAttr = document.createAttribute('hidden');
   try {
     const response = await fetch('/auth/users/', {
       method: 'POST',
-      headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'X-CSRFToken': csrf_token },
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrf_token,
+      },
       body: JSON.stringify(userData),
     });
 
@@ -91,51 +74,71 @@ document.getElementById('button').addEventListener('click', () => {
       const usernameMessage = document.getElementById('username_message');
       if (errorData.username && errorData.username.length > 0) {
         usernameMessage.innerHTML = `${errorData.username[0]}`;
+        usernameMessage.removeAttribute('hidden');
       } else {
         usernameMessage.innerHTML = '';
+        usernameMessage.setAttribute('hidden', '');
       }
 
       const emailMessage = document.getElementById('email_message');
       if (errorData.email && errorData.email.length > 0) {
         emailMessage.innerHTML = `${errorData.email[0]}`;
+        emailMessage.removeAttribute('hidden');
       } else {
         emailMessage.innerHTML = '';
+        usernameMessage.setAttribute('hidden', '');
       }
 
       const firstNameMessage = document.getElementById('first_name_message');
       if (errorData.first_name && errorData.first_name.length > 0) {
         firstNameMessage.innerHTML = `${errorData.first_name[0]}`;
+        firstNameMessage.removeAttribute('hidden');
       } else {
         firstNameMessage.innerHTML = '';
+        firstNameMessage.setAttribute('hidden', '');
       }
 
       const lastNameMessage = document.getElementById('last_name_message');
       if (errorData.last_name && errorData.last_name.length > 0) {
         lastNameMessage.innerHTML = `${errorData.last_name[0]}`;
+        lastNameMessage.removeAttribute('hidden');
       } else {
         lastNameMessage.innerHTML = '';
+        lastNameMessage.setAttribute('hidden', '');
       }
 
       const passwordMessage = document.getElementById('password_message');
-      if (errorData.password && errorData.password.length > 0 ) {
+      if (errorData.password && errorData.password.length > 0) {
         passwordMessage.innerHTML = `${errorData.password[0]}`;
+        passwordMessage.removeAttribute('hidden');
       } else {
         passwordMessage.innerHTML = '';
+        passwordMessage.setAttribute('hidden', '');
       }
 
       const otherMessage = document.getElementById('other_message');
-      if (errorData.non_field_errors && errorData.non_field_errors.length > 0 ) {
+      if (errorData.non_field_errors && errorData.non_field_errors.length > 0) {
         otherMessage.innerHTML = `${errorData.non_field_errors[0]}`;
+        otherMessage.removeAttribute('hidden');
       } else {
         otherMessage.innerHTML = '';
+        otherMessage.removeAttribute('hidden');
+      }
+      
+      if (errorData.re_password && errorData.re_password.length > 0) {
+        otherMessage.innerHTML = `${errorData.re_password[0]}`;
+        otherMessage.removeAttribute('hidden');
+      } else {
+        otherMessage.innerHTML = '';
+        otherMessage.removeAttribute('hidden');
       }
     } else {
       const responseData = await response.json();
       console.log('Registration successful 🤗');
     }
   } catch (error) {
-    //console.error(error);
-    alert('There was an error submitting the form, if this continues, please contact the team.')
+    //console.error('There was an error:', error);
+    alert('There was an error submitting the form, if this continues, please contact the team.');
   }
 };
 </script>
