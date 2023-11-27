@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import BookingForm, RegistrationForm
+from .forms import BookingForm, RegistrationForm, LoginForm
 from .models import Menu
 from django.core import serializers
 from .models import Booking
@@ -11,7 +11,7 @@ from rest_framework import permissions
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ModelViewSet
 from .models import Menu, Booking, UserAccount
-#from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from .serializers import MenuSerializer, BookingSerializer, UserSerializer
 import json
 
@@ -50,6 +50,16 @@ def register(request):
             form.save()
     context = {'form': form}
     return render(request, 'register.html', context)
+
+
+def login(request):
+    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            form.save()
+    context = {'form': form}
+    return render(request, 'login.html', context)
 
 
 # Add your code here to create new views
