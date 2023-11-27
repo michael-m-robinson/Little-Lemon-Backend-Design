@@ -59,33 +59,6 @@ const loginUser = async (userData) => {
         usernameMessage.setAttribute('hidden', '');
       }
 
-      const emailMessage = document.getElementById('email_message');
-      if (errorData.email && errorData.email.length > 0) {
-        emailMessage.innerHTML = `${errorData.email[0]}`;
-        emailMessage.removeAttribute('hidden');
-      } else {
-        emailMessage.innerHTML = '';
-        usernameMessage.setAttribute('hidden', '');
-      }
-
-      const firstNameMessage = document.getElementById('first_name_message');
-      if (errorData.first_name && errorData.first_name.length > 0) {
-        firstNameMessage.innerHTML = `${errorData.first_name[0]}`;
-        firstNameMessage.removeAttribute('hidden');
-      } else {
-        firstNameMessage.innerHTML = '';
-        firstNameMessage.setAttribute('hidden', '');
-      }
-
-      const lastNameMessage = document.getElementById('last_name_message');
-      if (errorData.last_name && errorData.last_name.length > 0) {
-        lastNameMessage.innerHTML = `${errorData.last_name[0]}`;
-        lastNameMessage.removeAttribute('hidden');
-      } else {
-        lastNameMessage.innerHTML = '';
-        lastNameMessage.setAttribute('hidden', '');
-      }
-
       const passwordMessage = document.getElementById('password_message');
       if (errorData.password && errorData.password.length > 0) {
         passwordMessage.innerHTML = `${errorData.password[0]}`;
@@ -98,14 +71,6 @@ const loginUser = async (userData) => {
       const otherMessage = document.getElementById('other_message');
       if (errorData.non_field_errors && errorData.non_field_errors.length > 0) {
         otherMessage.innerHTML = `${errorData.non_field_errors[0]}`;
-        otherMessage.removeAttribute('hidden');
-      } else {
-        otherMessage.innerHTML = '';
-        otherMessage.setAttribute('hidden', '');
-      }
-      
-      if (errorData.re_password && errorData.re_password.length > 0) {
-        otherMessage.innerHTML = `${errorData.re_password[0]}`;
         otherMessage.removeAttribute('hidden');
       } else {
         otherMessage.innerHTML = '';
