@@ -68,67 +68,39 @@ const registerUser = async (userData) => {
     });
 
     if (!response.ok) {
+
       const errorData = await response.json();
-      const usernameMessage = document.getElementById('username_message');
-      if (errorData.username && errorData.username.length > 0) {
-        usernameMessage.innerHTML = `${errorData.username[0]}`;
-        usernameMessage.removeAttribute('hidden');
-      } else {
-        usernameMessage.innerHTML = '';
-        usernameMessage.setAttribute('hidden', '');
+
+      const checkForErrorData = (messageElement, errorDataName) => {
+          if(errorData[errorDataName] && errorData[errorDataName].length > 0) {
+              messageElement.innerHTML = `${errorData[errorDataName][0]}`;
+              messageElement.removeAttribute('hidden');
+          } else {
+              messageElement.innerHTML = '';
+              messageElement.setAttribute('hidden', '');
+          }
       }
+
+      const usernameMessage = document.getElementById('username_message');
+      checkForErrorData(usernameMessage,'username');
 
       const emailMessage = document.getElementById('email_message');
-      if (errorData.email && errorData.email.length > 0) {
-        emailMessage.innerHTML = `${errorData.email[0]}`;
-        emailMessage.removeAttribute('hidden');
-      } else {
-        emailMessage.innerHTML = '';
-        usernameMessage.setAttribute('hidden', '');
-      }
+      checkForErrorData(emailMessage, 'email');
 
       const firstNameMessage = document.getElementById('first_name_message');
-      if (errorData.first_name && errorData.first_name.length > 0) {
-        firstNameMessage.innerHTML = `${errorData.first_name[0]}`;
-        firstNameMessage.removeAttribute('hidden');
-      } else {
-        firstNameMessage.innerHTML = '';
-        firstNameMessage.setAttribute('hidden', '');
-      }
+      checkForErrorData(firstNameMessage, 'first_name');
 
       const lastNameMessage = document.getElementById('last_name_message');
-      if (errorData.last_name && errorData.last_name.length > 0) {
-        lastNameMessage.innerHTML = `${errorData.last_name[0]}`;
-        lastNameMessage.removeAttribute('hidden');
-      } else {
-        lastNameMessage.innerHTML = '';
-        lastNameMessage.setAttribute('hidden', '');
-      }
+      checkForErrorData(lastNameMessage, 'last_name');
 
       const passwordMessage = document.getElementById('password_message');
-      if (errorData.password && errorData.password.length > 0) {
-        passwordMessage.innerHTML = `${errorData.password[0]}`;
-        passwordMessage.removeAttribute('hidden');
-      } else {
-        passwordMessage.innerHTML = '';
-        passwordMessage.setAttribute('hidden', '');
-      }
+      checkForErrorData(passwordMessage, 'password');
 
       const otherMessage = document.getElementById('other_message');
-      if (errorData.non_field_errors && errorData.non_field_errors.length > 0) {
-        otherMessage.innerHTML = `${errorData.non_field_errors[0]}`;
-        otherMessage.removeAttribute('hidden');
+      if(errorData.non_field_errors && errorData.non_field_errors.length > 0){
+          checkForErrorData(otherMessage, 'non_field_errors');
       } else {
-        otherMessage.innerHTML = '';
-        otherMessage.setAttribute('hidden', '');
-      }
-      
-      if (errorData.re_password && errorData.re_password.length > 0) {
-        otherMessage.innerHTML = `${errorData.re_password[0]}`;
-        otherMessage.removeAttribute('hidden');
-      } else {
-        otherMessage.innerHTML = '';
-        otherMessage.setAttribute('hidden', '');
+          checkForErrorData(otherMessage, 're_password');
       }
     } else {
       const responseData = await response.json();
