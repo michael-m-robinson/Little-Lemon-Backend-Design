@@ -7,83 +7,14 @@
     <h1>Login to little lemon</h1>
         <div class="row">
             <div class="column">
-                {% csrf_token %}
-                <form id="login_form" method="POST">
-                    <!-- {% csrf_token %} -->
-                    <p>
-                        <label for="username">Username:</label>
-                        <input id="username" type="text" placeholder="username..." maxlength="200" required>
-                        <p id="username_message" style="color:red; margin-top: -20px; font-size: 15px;" hidden></p>
-                    <p>
-                        <label for="password">Password:</label>
-                        <input id="password" type="password" placeholder="password..." maxlength="200" required>
-                        <p id="password_message" style="color:red; margin-top: -20px; font-size: 15px;" hidden></p>
-                        <p id="other_message" style="color:red; margin-top: -20px; font-size: 15px;" hidden></p>
-                    <button type="button" id="button">Submit</button>
+                <form id="login_form" method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" id="button">Submit</button>
                 </form>
+                <a href="{% url 'register' %}"><p>Register for an account</p></a>
             </div>
         </div>
     </article>
 </section>
-<script>
-const csrf_token = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-document.getElementById('button').addEventListener('click', () => {
-  const form_data = {
-    username: document.getElementById('username').value,
-    password: document.getElementById('password').value,
-  };
-  loginUser(form_data);
-});
-
-const loginUser = async (userData) => {
-  try {
-    const response = await fetch('/auth/users/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrf_token,
-      },
-      body: JSON.stringify(userData),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      const usernameMessage = document.getElementById('username_message');
-      if (errorData.username && errorData.username.length > 0) {
-        usernameMessage.innerHTML = `${errorData.username[0]}`;
-        usernameMessage.removeAttribute('hidden');
-      } else {
-        usernameMessage.innerHTML = '';
-        usernameMessage.setAttribute('hidden', '');
-      }
-
-      const passwordMessage = document.getElementById('password_message');
-      if (errorData.password && errorData.password.length > 0) {
-        passwordMessage.innerHTML = `${errorData.password[0]}`;
-        passwordMessage.removeAttribute('hidden');
-      } else {
-        passwordMessage.innerHTML = '';
-        passwordMessage.setAttribute('hidden', '');
-      }
-
-      const otherMessage = document.getElementById('other_message');
-      if (errorData.non_field_errors && errorData.non_field_errors.length > 0) {
-        otherMessage.innerHTML = `${errorData.non_field_errors[0]}`;
-        otherMessage.removeAttribute('hidden');
-      } else {
-        otherMessage.innerHTML = '';
-        otherMessage.setAttribute('hidden', '');
-      }
-    } else {
-      const responseData = await response.json();
-      console.log('Registration successful 🤗');
-    }
-  } catch (error) {
-    //console.error('There was an error:', error);
-    alert('There was an error submitting the form, if this continues, please contact the team.');
-  }
-};
-</script>
 {% endblock %}

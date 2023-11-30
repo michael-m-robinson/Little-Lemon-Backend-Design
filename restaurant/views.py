@@ -1,8 +1,6 @@
-from django.shortcuts import render
-from .forms import BookingForm, RegistrationForm, LoginForm
-from .models import Menu
+from django.shortcuts import render, redirect
+from .forms import BookingForm, RegistrationForm
 from django.core import serializers
-from .models import Booking
 from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
@@ -11,6 +9,10 @@ from rest_framework import permissions
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ModelViewSet
 from .models import Menu, Booking, UserAccount
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
+
 # from django.contrib.auth.models import User
 from .serializers import MenuSerializer, BookingSerializer, UserSerializer
 import json
@@ -33,13 +35,16 @@ def reservations(request):
 
 
 def book(request):
-    form = BookingForm()
-    if request.method == 'POST':
-        form = BookingForm(request.POST)
-        if form.is_valid():
-            form.save()
-    context = {'form': form}
-    return render(request, 'book.html', context)
+    if not request.user.is_authenticated:
+        return render(request, 'restricted.html')
+    elif request.user.is_authenticated:
+        form = BookingForm()
+        if request.method == 'POST':
+            form = BookingForm(request.POST)
+            if form.is_valid():
+                form.save()
+        context = {'form': form}
+        return render(request, 'book.html', context)
 
 
 def register(request):
@@ -52,14 +57,24 @@ def register(request):
     return render(request, 'register.html', context)
 
 
-def login(request):
-    form = LoginForm()
+def login_view(request):
     if request.method == 'POST':
-        form = LoginForm(request.POST)
+        form = AuthenticationForm(request, request.POST)
         if form.is_valid():
-            form.save()
-    context = {'form': form}
-    return render(request, 'login.html', context)
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
 
 # Add your code here to create new views
