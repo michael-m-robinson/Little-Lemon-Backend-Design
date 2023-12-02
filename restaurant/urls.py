@@ -15,4 +15,5 @@ urlpatterns = [
     path('bookings/', views.bookings, name='bookings'),
     path('menu-items/', views.MenuItemView.as_view()),
     path('menu-items/<int:pk>', views.SingleMenuItemView.as_view()),
+    path('401/', views.custom_401, name='custom_401'),
 ]

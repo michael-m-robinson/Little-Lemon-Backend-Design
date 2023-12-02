@@ -6,13 +6,6 @@ from .models import Menu, Booking
 
 User = get_user_model()
 
-"""
-class UserSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'groups']
-"""
-
 
 class UserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer):
@@ -22,7 +15,7 @@ class UserSerializer(UserCreateSerializer):
 class MenuSerializer(ModelSerializer):
     class Meta:
         model = Menu
-        fields = ['name', 'price', 'menu_item_description']
+        fields = ['id', 'name', 'price', 'menu_item_description']
 
 
 class BookingSerializer(ModelSerializer):
