@@ -62,9 +62,9 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
 
 class Booking(models.Model):
-    first_name = models.CharField(max_length=200, null=False, default="Little Lemon Customer")
-    reservation_date = models.DateField(auto_now=True)
-    reservation_slot = models.SmallIntegerField(default=10)
+    first_name = models.CharField(max_length=200, null=False)
+    reservation_date = models.DateField()
+    reservation_slot = models.SmallIntegerField(null=False)
 
     def __str__(self):
         return f'{self.first_name} : {self.reservation_slot}'
