@@ -8,16 +8,16 @@ User = get_user_model()
 
 class UserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer):
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'groups']
+        fields = ["id", "username", "email", "first_name", "last_name", "groups"]
 
 
 class MenuSerializer(ModelSerializer):
     class Meta:
         model = Menu
-        fields = ['id', 'name', 'price', 'menu_item_description']
+        fields = ["id", "name", "price", "menu_item_description"]
 
 
 class BookingSerializer(ModelSerializer):
     class Meta:
         model = Booking
-        fields = '__all__'
+        fields = "__all__"

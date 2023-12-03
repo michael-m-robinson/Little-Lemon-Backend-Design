@@ -21,13 +21,13 @@ from restaurant.views import BookingViewSet, LoginUser
 import restaurant.urls
 
 router = DefaultRouter()
-router.register(r'tables', BookingViewSet)
+router.register(r"tables", BookingViewSet)
 
 urlpatterns = [
-    path('', include(restaurant.urls)),
-    path('admin/', admin.site.urls),
-    path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.authtoken')),
-    path('auth/login', LoginUser.as_view(), name="user_login"),
-    path('restaurant/', include(restaurant.urls)),
+    path("", include(restaurant.urls)),
+    path("admin/", admin.site.urls),
+    path("auth/", include("djoser.urls")),
+    path("auth/", include("djoser.urls.authtoken")),
+    path("auth/login", LoginUser.as_view(), name="user_login"),
+    path("restaurant/", include(restaurant.urls)),
 ]

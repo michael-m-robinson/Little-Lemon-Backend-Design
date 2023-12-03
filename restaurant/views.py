@@ -9,7 +9,12 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import permissions, status
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, CreateAPIView
+from rest_framework.generics import (
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+    ListAPIView,
+    CreateAPIView,
+)
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
@@ -22,55 +27,63 @@ import json
 
 # Create your views here.
 def home(request):
-    return render(request, 'index.html')
+    return render(request, "index.html")
 
 
 def about(request):
-    return render(request, 'about.html')
+    return render(request, "about.html")
 
 
 def reservations(request):
-    date = request.GET.get('date', datetime.today().date())
+    date = request.GET.get("date", datetime.today().date())
     bookings = Booking.objects.all()
-    booking_json = serializers.serialize('json', bookings)
-    return render(request, 'bookings.html', {"bookings": booking_json})
+    booking_json = serializers.serialize("json", bookings)
+    return render(request, "bookings.html", {"bookings": booking_json})
 
 
-@login_required(login_url='/401/')
+@login_required(login_url="/401/")
 def book(request):
     if not request.user.is_authenticated:
-        return render(request, 'restricted.html')
+        return render(request, "restricted.html")
     elif request.user.is_authenticated:
         form = BookingForm()
-        if request.method == 'POST':
+        if request.method == "POST":
             form = BookingForm(request.POST)
             if form.is_valid():
                 form.save()
-        context = {'form': form}
-        return render(request, 'book.html', context)
+        context = {"form": form}
+        return render(request, "book.html", context)
 
 
 def register(request):
     form = RegistrationForm()
-    context = {'form': form}
-    return render(request, 'register.html', context)
+    context = {"form": form}
+    return render(request, "register.html", context)
 
 
 class LoginUser(CreateAPIView):
     def post(self, request, *args, **kwargs):
         if request.data:
-            username = request.data['username']
-            password = request.data['password']
+            username = request.data["username"]
+            password = request.data["password"]
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
                 token, created = Token.objects.get_or_create(user=user)
-                response = Response({'message': 'Login successful 😊', 'token': token.key}, status=status.HTTP_200_OK)
+                response = Response(
+                    {"message": "Login successful 😊", "token": token.key},
+                    status=status.HTTP_200_OK,
+                )
                 return response
             else:
-                return Response({'message': 'Login failed 😒'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"message": "Login failed 😒"}, status=status.HTTP_400_BAD_REQUEST
+                )
         else:
-            return Response({'message': 'could not find username and/or password.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "could not find username and/or password."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 def login_view(request):
@@ -90,18 +103,18 @@ def login_view(request):
     #             return JsonResponse({'message': 'Login failed 😒'})
 
     form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
+    return render(request, "login.html", {"form": form})
 
 
 def logout_view(request):
     logout(request)
-    return redirect('home')
+    return redirect("home")
 
 
 def menu(request):
     menu_data = Menu.objects.all()
     main_data = {"menu": menu_data}
-    return render(request, 'menu.html', {"menu": main_data})
+    return render(request, "menu.html", {"menu": main_data})
 
 
 def display_menu_item(request, pk=None):
@@ -109,11 +122,11 @@ def display_menu_item(request, pk=None):
         menu_item = Menu.objects.get(pk=pk)
     else:
         menu_item = ""
-    return render(request, 'menu_item.html', {"menu_item": menu_item})
+    return render(request, "menu_item.html", {"menu_item": menu_item})
 
 
 def custom_401(request, exception=None):
-    return render(request, '401.html', status=401)
+    return render(request, "401.html", status=401)
 
 
 class BookingViewSet(ModelViewSet):
@@ -137,8 +150,10 @@ class MenuItemView(ListCreateAPIView):
         if self.request.user.is_superuser:
             return Menu.objects.all()
         else:
-            return Response({'Message': 'You do not have permission to use this api.'},
-                            status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"Message": "You do not have permission to use this api."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
 
     def post(self, request, *args, **kwargs):
         # Handle POST requests
@@ -149,8 +164,10 @@ class MenuItemView(ListCreateAPIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'Message': 'You do not have permission to use this api.'},
-                            status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"Message": "You do not have permission to use this api."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
 
 
 @permission_classes([IsAuthenticated])
@@ -165,8 +182,10 @@ class SingleMenuItemView(RetrieveUpdateDestroyAPIView):
             serializer = self.get_serializer(instance)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response({'Message': 'You do not have permission to use this api.'},
-                            status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"Message": "You do not have permission to use this api."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
 
     def put(self, request, *args, **kwargs):
         # Handle PUT requests
@@ -178,8 +197,10 @@ class SingleMenuItemView(RetrieveUpdateDestroyAPIView):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'Message': 'You do not have permission to use this api.'},
-                            status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"Message": "You do not have permission to use this api."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
 
     def patch(self, request, *args, **kwargs):
         # Handle PATCH requests
@@ -191,8 +212,10 @@ class SingleMenuItemView(RetrieveUpdateDestroyAPIView):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'Message': 'You do not have permission to use this api.'},
-                            status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"Message": "You do not have permission to use this api."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
 
     def delete(self, request, *args, **kwargs):
         if self.request.user.is_superuser:
@@ -200,8 +223,10 @@ class SingleMenuItemView(RetrieveUpdateDestroyAPIView):
             instance.delete()
             return Response({"message": "Object deleted successfully"})
         else:
-            return Response({'Message': 'You do not have permission to use this api.'},
-                            status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"Message": "You do not have permission to use this api."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
 
 
 @permission_classes([IsAuthenticated])
@@ -243,9 +268,11 @@ class BookingByDate(ListAPIView):
     serializer_class = BookingSerializer
 
     def get_queryset(self):
-        reservation_date = self.request.query_params.get('date', None)
+        reservation_date = self.request.query_params.get("date", None)
         if reservation_date:
-            reservation_query = Booking.objects.filter(reservation_date=reservation_date)
+            reservation_query = Booking.objects.filter(
+                reservation_date=reservation_date
+            )
             return reservation_query
         else:
             return Booking.objects.all()
@@ -262,8 +289,12 @@ class BookingItems(ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            reservation_exists = (Booking.objects.all().filter(reservation_date=self.request.data['reservation_date'])
-                                  .filter(reservation_slot=self.request.data['reservation_slot']).exists())
+            reservation_exists = (
+                Booking.objects.all()
+                .filter(reservation_date=self.request.data["reservation_date"])
+                .filter(reservation_slot=self.request.data["reservation_slot"])
+                .exists()
+            )
 
             if not reservation_exists:
                 serializer.save()
