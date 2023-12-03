@@ -37,6 +37,7 @@
 		</div>
 	</article>
 </section>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 	const csrf_token = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
@@ -101,9 +102,11 @@
 			} else {
 				const responseData = await response.json();
 				console.log('Registration successful 🤗');
+				Swal.fire('Registration Successful', 'We will now take you home', 'success').then(() => {
+					window.location = '/restaurant/';
+				});
 			}
 		} catch (error) {
-			//console.error('There was an error:', error);
 			alert('There was an error submitting the form, if this continues, please contact the team.');
 		}
 	};
