@@ -1,23 +1,21 @@
 from django.shortcuts import render, redirect
-from .forms import BookingForm, RegistrationForm
+
 from django.core import serializers
-from datetime import datetime
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
 from django.shortcuts import render
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import permission_classes, api_view, renderer_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import permissions, status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from .models import Menu, Booking, UserAccount
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required
-
-# from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
+from .forms import BookingForm, RegistrationForm
 from .serializers import MenuSerializer, BookingSerializer, UserSerializer
+from datetime import datetime
+from .models import Menu, Booking, UserAccount
 import json
 
 
@@ -188,6 +186,41 @@ class SingleMenuItemView(RetrieveUpdateDestroyAPIView):
 
 
 @permission_classes([IsAuthenticated])
+class SingleBookingItem(RetrieveUpdateDestroyAPIView):
+    serializer_class = BookingSerializer
+    queryset = Booking.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.delete()
+        return Response({"message": "Booking data deleted."}, status=status.HTTP_200_OK)
+
+
+
+@permission_classes([IsAuthenticated])
 class Bookings(ListCreateAPIView):
     serializer_class = BookingSerializer
     queryset = Booking.objects.all()
@@ -203,10 +236,6 @@ class Bookings(ListCreateAPIView):
 
             if not reservation_exists:
                 serializer.save()
-
-            # date = request.GET.get('date', datetime.today().date())
-            # bookings = Booking.objects.filter(reservation_date=date)
-            # booking_json = self.get_serializer(data=bookings)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 

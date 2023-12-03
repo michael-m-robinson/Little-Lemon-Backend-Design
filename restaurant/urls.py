@@ -13,6 +13,8 @@ urlpatterns = [
     path('restaurant/menu/', views.menu, name="menu"),
     path('api/menu_item/<int:pk>/', views.display_menu_item, name="menu_item"),
     path('api/bookings/', views.Bookings.as_view()),
+    path('api/booking_item/<int:pk>/', views.SingleBookingItem.as_view(), name="booking_item"),
+    #path('api/bookings/<int:year>/<int:month>/<int:date>/', views.SingleBookingItem.as_view(), name="bookings"),
     path('api/menu-items/', views.MenuItemView.as_view()),
     path('api/menu-items/<int:pk>', views.SingleMenuItemView.as_view()),
     path('401/', views.custom_401, name='custom_401'),

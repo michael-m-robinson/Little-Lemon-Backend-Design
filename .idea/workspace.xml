@@ -5,21 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="52f66a67-080f-488a-8e2e-d32b469760be" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Pipfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pipfile.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/restaurant/migrations/0002_alter_booking_reservation_date.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/restaurant/migrations/0003_alter_booking_first_name.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/restaurant/migrations/0004_alter_booking_reservation_slot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/littlelemon.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/littlelemon.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/littlelemon/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/littlelemon/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/littlelemon/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/littlelemon/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/restaurant/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/restaurant/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/restaurant/migrations/0002_remove_booking_booking_date_remove_booking_name_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/restaurant/migrations/0003_alter_menu_price.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/restaurant/migrations/0004_useraccount.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/restaurant/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/restaurant/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/restaurant/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/restaurant/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/restaurant/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/restaurant/views.py" afterDir="false" />
     </list>
@@ -150,7 +136,7 @@
       <workItem from="1701450176308" duration="11732000" />
       <workItem from="1701472992835" duration="2984000" />
       <workItem from="1701535292812" duration="1950000" />
-      <workItem from="1701538292898" duration="17945000" />
+      <workItem from="1701538292898" duration="22565000" />
     </task>
     <servers />
   </component>
@@ -165,13 +151,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/restaurant/views.py</url>
-          <line>198</line>
+          <line>231</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/restaurant/views.py</url>
-          <line>127</line>
+          <line>125</line>
           <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/restaurant/views.py</url>
+          <line>192</line>
+          <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
