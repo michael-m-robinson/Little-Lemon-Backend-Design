@@ -1,3 +1,4 @@
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 
 from django.core import serializers
@@ -5,10 +6,10 @@ from django.shortcuts import render
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from rest_framework.decorators import permission_classes, api_view, renderer_classes
+from rest_framework.decorators import permission_classes, api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import permissions, status
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, CreateAPIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
@@ -51,26 +52,44 @@ def book(request):
 
 def register(request):
     form = RegistrationForm()
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
     context = {'form': form}
     return render(request, 'register.html', context)
 
 
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
+class LoginUser(CreateAPIView):
+    def post(self, request, *args, **kwargs):
+        if request.data:
+            username = request.data['username']
+            password = request.data['password']
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')
-    else:
-        form = AuthenticationForm()
+                token, created = Token.objects.get_or_create(user=user)
+                response = Response({'message': 'Login successful 😊', 'token': token.key}, status=status.HTTP_200_OK)
+                return response
+            else:
+                return Response({'message': 'Login failed 😒'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'message': 'could not find username and/or password.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def login_view(request):
+    # if request.method == 'POST':
+    #     form = AuthenticationForm(request, request.POST)
+    #     if form.is_valid():
+    #         username = form.cleaned_data['username']
+    #         password = form.cleaned_data['password']
+    #         user = authenticate(request, username=username, password=password)
+    #         if user is not None:
+    #             login(request, user)
+    #             token, created = Token.objects.get_or_create(user=user)
+    #             response = JsonResponse({'message': 'Login successful 😊'})
+    #             response.set_cookie('authToken', token.key, httponly=True, secure=True)
+    #             return response
+    #         else:
+    #             return JsonResponse({'message': 'Login failed 😒'})
+
+    form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
 
@@ -219,9 +238,21 @@ class SingleBookingItem(RetrieveUpdateDestroyAPIView):
         return Response({"message": "Booking data deleted."}, status=status.HTTP_200_OK)
 
 
+@permission_classes([IsAuthenticated])
+class BookingByDate(ListAPIView):
+    serializer_class = BookingSerializer
+
+    def get_queryset(self):
+        reservation_date = self.request.query_params.get('date', None)
+        if reservation_date:
+            reservation_query = Booking.objects.filter(reservation_date=reservation_date)
+            return reservation_query
+        else:
+            return Booking.objects.all()
+
 
 @permission_classes([IsAuthenticated])
-class Bookings(ListCreateAPIView):
+class BookingItems(ListCreateAPIView):
     serializer_class = BookingSerializer
     queryset = Booking.objects.all()
 

@@ -6,8 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="52f66a67-080f-488a-8e2e-d32b469760be" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/littlelemon/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/littlelemon/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/littlelemon/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/littlelemon/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/restaurant/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/restaurant/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/restaurant/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/restaurant/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/restaurant/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/restaurant/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/book.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/book.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,7 +141,8 @@
       <workItem from="1701450176308" duration="11732000" />
       <workItem from="1701472992835" duration="2984000" />
       <workItem from="1701535292812" duration="1950000" />
-      <workItem from="1701538292898" duration="22565000" />
+      <workItem from="1701538292898" duration="23208000" />
+      <workItem from="1701598095189" duration="26438000" />
     </task>
     <servers />
   </component>
@@ -151,18 +157,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/restaurant/views.py</url>
-          <line>231</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/restaurant/views.py</url>
-          <line>125</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/restaurant/views.py</url>
-          <line>192</line>
-          <option name="timeStamp" value="17" />
+          <line>245</line>
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

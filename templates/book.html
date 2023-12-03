@@ -10,7 +10,7 @@
       <!--Begin col-->
       <div class="column">
           {% csrf_token %}
-          <form method="POST" id="form">
+          <form id="form">
             <!-- {% csrf_token %} -->
             <p>
               <label for="first_name">Name:</label>
@@ -44,6 +44,9 @@
 </section>
 <script>
 const date = new Date();
+const csrf_token = document.querySelector('[name=csrfmiddlewaretoken]').value;
+const authToken = localStorage.getItem('authToken');
+
 document.getElementById('reservation_date').value = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate().toString().padStart(2, '0')}`;
 document.getElementById('reservation_date').addEventListener('change', () => {
   getBookings();
@@ -56,19 +59,25 @@ document.getElementById('reservation_date').addEventListener('click', () => {
 function getBookings() {
   let reserved_slots = [];
   const date = document.getElementById('reservation_date').value;
+
   document.getElementById('today').innerHTML = date;
-  fetch("{% url 'bookings' %}" + '?date=' + date)
+  fetch("{% url 'booking_date' %}" + '?date=' + date, { method: 'get',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${authToken}`,
+            'X-CSRFToken': csrf_token,
+      }})
     .then((r) => r.json())
     .then((data) => {
+        console.log(data);
       reserved_slots = [];
       let bookings = '';
-
       data.forEach((item) => {
-        reserved_slots.push(item.fields.reservation_slot);
-        bookings += `<p>${item.fields.first_name} - ${formatTime(item.fields.reservation_slot)}</p>`;
+        reserved_slots.push(item.reservation_slot);
+        bookings += `<p>${item.first_name} - ${formatTime(item.reservation_slot)}</p>`;
       });
 
-      let slot_options = `
+              let slot_options = `
       <option value="0" disabled>Select time</option>`;
       for (let i = 10; i <= 20; i++) {
         const label = formatTime(i);
@@ -104,7 +113,13 @@ document.getElementById('button').addEventListener('click', function (e) {
       reservation_slot: document.getElementById('reservation_slot').value,
     };
 
-    fetch("{% url 'bookings' %}", { method: 'post', body: JSON.stringify(formdata) })
+    fetch("{% url 'bookings' %}", { method: 'post',
+        headers: {
+        Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${authToken}`,
+            'X-CSRFToken': csrf_token,
+      }, body: JSON.stringify(formdata) })
       .then((r) => r.text())
       .then((data) => {
           getBookings();

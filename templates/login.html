@@ -7,14 +7,50 @@
     <h1>Login to little lemon</h1>
         <div class="row">
             <div class="column">
-                <form id="login_form" method="POST" action="{% url 'login' %}">
+                <form id="login_form">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" id="button">Submit</button>
+                    <button type="button" id="button">Submit</button>
                 </form>
                 <a href="{% url 'register' %}"><p>Register for an account</p></a>
             </div>
         </div>
     </article>
 </section>
+<script>
+const csrf_token = document.querySelector('[name=csrfmiddlewaretoken]').value;
+document.getElementById('button').addEventListener('click',() =>{
+   const formData = {
+       username: document.getElementById('id_username').value,
+       password: document.getElementById('id_password').value,
+   }
+   loginUser(formData);
+});
+
+const loginUser = async (userData) => {
+
+        const response = await fetch('{% url 'user_login' %}', {
+            method:'POST',
+            headers:{
+                Accept:'application/json',
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrf_token,
+            },
+            body: JSON.stringify(userData)
+        }).then(response => {
+            if (!response.ok) {
+            throw new Error(`Login unsuccessful 😒
+            HTTP error! Status: ${response.status}`);
+            }
+
+            return response.json();
+        }).then(data => {
+            console.log('Response message:', data.message);
+            localStorage.setItem('authToken', data.token);
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+</script>
 {% endblock %}
