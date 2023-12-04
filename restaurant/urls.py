@@ -11,11 +11,15 @@ urlpatterns = [
     path("logout/", views.logout_view, name="logout"),
     path("reservations/", views.reservations, name="reservations"),
     path("menu/", views.menu, name="menu"),
-    path("api/menu_item/<int:pk>/", views.display_menu_item, name="menu_item"),
+    path("menu/menu_item/<int:pk>/", views.display_menu_item, name="menu_item"),
     path("api/bookings/", views.BookingItems.as_view(), name="bookings"),
-    path("api/booking_date/", views.BookingByDate.as_view(), name="booking_date"),
     path(
-        "api/booking_item/<int:pk>/",
+        "api/bookings/<int:year>/<int:month>/<int:day>/",
+        views.BookingByDate.as_view(),
+        name="booking_date",
+    ),
+    path(
+        "api/bookings/<int:pk>/",
         views.SingleBookingItem.as_view(),
         name="booking_item",
     ),

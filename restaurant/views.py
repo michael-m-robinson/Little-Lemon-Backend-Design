@@ -137,8 +137,10 @@ class MenuItemView(ListCreateAPIView):
             serializer = self.get_serializer(menu_query_set, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response({'message': 'You do not have permission to use this API'},
-                            status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                {"message": "You do not have permission to use this API"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
 
     def post(self, request, *args, **kwargs):
         # Handle POST requests
@@ -253,14 +255,14 @@ class BookingByDate(ListAPIView):
     serializer_class = BookingSerializer
 
     def get_queryset(self):
-        reservation_date = self.request.query_params.get("date", None)
-        if reservation_date:
-            reservation_query = Booking.objects.filter(
-                reservation_date=reservation_date
-            )
-            return reservation_query
-        else:
-            return Booking.objects.all()
+        year = self.kwargs["year"]
+        month = self.kwargs["month"]
+        day = self.kwargs["day"]
+        return Booking.objects.filter(
+            reservation_date__year=year,
+            reservation_date__month=month,
+            reservation_date__day=day,
+        )
 
 
 @permission_classes([IsAuthenticated])

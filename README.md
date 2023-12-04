@@ -14,7 +14,7 @@ With the bearer token, you can test out the booking API using insomnia or your p
 
 #### Get Reservation
 
-GET http://yourserver/api/booking_item/{primary key}
+GET http://yourserver/api/bookings/{primary key}
 
 #### Make a Reservation
 
@@ -36,23 +36,25 @@ GET http://yourserver/api/bookings/
 
 #### Get Reservations by date
 
-http://yourserver/api/booking_date/?date=2023-11-30
+http://yourserver/api/bookings/2023/12/3/
 
 ### Menu API
 
 Please note that the menu API requires you to be a super user for certain functions, like creating a menu item. Once you've created a superuser account, send a GET method with your username and password to the following address: /auth/token/login. Doing so will provide a token to use with the API.
 
+#### Get all menu items
+
 http://127.0.0.1:8000/api/menu-items/
 
-To GET a menu item, follow this example:
+#### Get a menu item
 
 http://127.0.0.1:8000/api/menu-items/1
 
-To DELETE a menu item, follow this example:
+#### Delete a menu item
 
 http://127.0.0.1:8000/api/menu-items/1
 
-To POST a menu item, follow this example:
+#### Create a menu item
 
 http://127.0.0.1:8000/api/menu-items/
 

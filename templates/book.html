@@ -55,9 +55,9 @@
 	function getBookings() {
 		let reserved_slots = [];
 		const date = document.getElementById('reservation_date').value;
-
+		const dateComponents = date.split('-');
 		document.getElementById('today').innerHTML = date;
-		fetch("{% url 'booking_date' %}" + '?date=' + date, {
+		fetch('/api/bookings/' + `${dateComponents[0]}/${dateComponents[1]}/${dateComponents[2]}`, {
 			method: 'get',
 			headers: {
 				'Content-Type': 'application/json',
