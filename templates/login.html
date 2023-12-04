@@ -1,0 +1,58 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<section>
+	<article>
+		<h1>Login to little lemon</h1>
+		<div class="row">
+			<div class="column">
+				<form id="login_form">
+					{% csrf_token %} {{ form.as_p }}
+					<button type="button" id="button">Submit</button>
+				</form>
+				<a href="{% url 'register' %}"><p>Register for an account</p></a>
+			</div>
+		</div>
+	</article>
+</section>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+	const csrf_token = document.querySelector('[name=csrfmiddlewaretoken]').value;
+	document.getElementById('button').addEventListener('click', () => {
+		const formData = {
+			username: document.getElementById('id_username').value,
+			password: document.getElementById('id_password').value,
+		};
+		loginUser(formData);
+	});
+
+	const loginUser = async (userData) => {
+		const response = await fetch("{% url 'user_login' %}", {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrf_token,
+			},
+			body: JSON.stringify(userData),
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`Login unsuccessful 😒
+	            HTTP error! Status: ${response.status}`);
+					Swal.fire('Login unsuccessful', 'Please try again', 'error');
+				}
+
+				return response.json();
+			})
+			.then((data) => {
+				console.log('Response message:', data.message);
+				localStorage.setItem('authToken', data.token);
+				Swal.fire('Login Successful', 'We will now take you home', 'success').then(() => {
+					window.location = '/restaurant/';
+				});
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	};
+</script>
+{% endblock %}

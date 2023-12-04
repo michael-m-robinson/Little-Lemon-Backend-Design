@@ -1,0 +1,11 @@
+{% extends 'base.html' %} {% block content %}
+<section>
+	<article>
+		<h1>You must be logged in to access this page.</h1>
+		<p
+			>You must be logged in to access this page, if you have an account, please use the login link in the menu to do so. If you need to register for an
+			account, please <a href="{% url 'register' %}"> click here.</a></p
+		>
+	</article>
+</section>
+{% endblock %}
