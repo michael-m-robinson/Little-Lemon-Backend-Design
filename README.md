@@ -14,7 +14,7 @@ With the bearer token, you can test out the booking API using insomnia or your p
 
 #### Get Reservation
 
-GET http://yourserver/api/bookings/{primary key}
+GET http://yourserver/api/bookings/1
 
 #### Make a Reservation
 
