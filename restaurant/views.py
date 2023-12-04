@@ -87,21 +87,6 @@ class LoginUser(CreateAPIView):
 
 
 def login_view(request):
-    # if request.method == 'POST':
-    #     form = AuthenticationForm(request, request.POST)
-    #     if form.is_valid():
-    #         username = form.cleaned_data['username']
-    #         password = form.cleaned_data['password']
-    #         user = authenticate(request, username=username, password=password)
-    #         if user is not None:
-    #             login(request, user)
-    #             token, created = Token.objects.get_or_create(user=user)
-    #             response = JsonResponse({'message': 'Login successful 😊'})
-    #             response.set_cookie('authToken', token.key, httponly=True, secure=True)
-    #             return response
-    #         else:
-    #             return JsonResponse({'message': 'Login failed 😒'})
-
     form = AuthenticationForm()
     return render(request, "login.html", {"form": form})
 
@@ -145,15 +130,15 @@ class MenuItemView(ListCreateAPIView):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
 
-    def get_queryset(self):
+    def get(self, request, *args, **kwargs):
         # Retrieve all menu items
         if self.request.user.is_superuser:
-            return Menu.objects.all()
+            menu_query_set = Menu.objects.all()
+            serializer = self.get_serializer(menu_query_set, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response(
-                {"Message": "You do not have permission to use this api."},
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
+            return Response({'message': 'You do not have permission to use this API'},
+                            status=status.HTTP_401_UNAUTHORIZED)
 
     def post(self, request, *args, **kwargs):
         # Handle POST requests
