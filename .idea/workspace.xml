@@ -135,6 +135,7 @@
       <workItem from="1701538292898" duration="23208000" />
       <workItem from="1701598095189" duration="26438000" />
       <workItem from="1701638095305" duration="14623000" />
+      <workItem from="1701656203533" duration="5000" />
     </task>
     <servers />
   </component>
@@ -160,7 +161,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/templates/login.html</url>
           <line>51</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
